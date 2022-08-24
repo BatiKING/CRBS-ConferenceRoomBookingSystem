@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Conference Room Booking System</title>
+    <style>
+        .crbs-footer {position: absolute; bottom: 15px}
+    </style>
+</head>
+<body>
+<nav>
+    <ul style="display: flex">
+        <li style="margin: 20px"><a href="/room-list"> Lista wszystkich sal</a></li>
+        <li style="margin: 20px"><a href="/room/new">Dodaj nową salę</a></li>
+    </ul>
+</nav>
+
+<h3>Modyfikacja pokoju {{ room_name }}</h3>
+<div class="crbs-form">
+    <form action="" method="POST">
+        {% csrf_token %}
+        <label>Nazwa sali
+            <input type="text" name="name" value="{{ room_name }}">
+        </label><br>
+        <label>Pojemność
+            <input type="number" name="capacity" value="{{ room_capacity }}">
+        </label><br>
+        <label>Projektor?
+            <input type="checkbox" name="projector" {{ room_projector }}>
+        </label><br>
+        <input type="submit" value="Modify">
+    </form>
+</div>
+    <footer class="crbs-footer">Author: Kamil Przygodzki</footer>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Conference Room Booking System</title>
+    <style>
+        .crbs-footer {position: absolute; bottom: 15px}
+        table.minimalistBlack {
+      border: 3px solid #000000;
+      width: 40%;
+      text-align: left;
+      border-collapse: collapse;
+    }
+    table.minimalistBlack td, table.minimalistBlack th {
+      border: 1px solid #000000;
+      padding: 5px 4px;
+    }
+    table.minimalistBlack tbody td {
+      font-size: 13px;
+    }
+    table.minimalistBlack thead {
+      background: #CFCFCF;
+      background: -moz-linear-gradient(top, #dbdbdb 0%, #d3d3d3 66%, #CFCFCF 100%);
+      background: -webkit-linear-gradient(top, #dbdbdb 0%, #d3d3d3 66%, #CFCFCF 100%);
+      background: linear-gradient(to bottom, #dbdbdb 0%, #d3d3d3 66%, #CFCFCF 100%);
+      border-bottom: 3px solid #000000;
+    }
+    table.minimalistBlack thead th {
+      font-size: 15px;
+      font-weight: bold;
+      color: #000000;
+      text-align: left;
+    }
+    table.minimalistBlack tfoot {
+      font-size: 14px;
+      font-weight: bold;
+      color: #000000;
+      border-top: 3px solid #000000;
+    }
+    table.minimalistBlack tfoot td {
+      font-size: 14px;
+    }
+    </style>
+</head>
+<body>
+<nav>
+    <ul style="display: flex">
+        <li style="margin: 20px"><a href="/room-list"> Lista wszystkich sal</a></li>
+        <li style="margin: 20px"><a href="/room/new">Dodaj nową salę</a></li>
+    </ul>
+</nav>
+
+<form action="" method="GET">
+{#    {% csrf_token %}#}
+    <label>Nazwa pokoju
+        <input type="text" id="search_room_name" name="search_room_name">
+    </label>
+    <label>Minimum miejsc
+        <input type="number" id="search_min_cap" name="search_min_cap">
+    </label>
+    <label>Rzutnik?
+        <input type="checkbox" id="search_projector" name="search_projector">
+    </label>
+    <input type="submit" value="Szukaj">
+</form>
+<br>
+<table class="minimalistBlack">
+    <tr>
+        <th>Room name</th>
+        <th>Capacity</th>
+        <th>Dostępność</th>
+        <th>Projector?</th>
+    </tr>
+
+{% for room_and_bookings in rooms_and_bookings %}
+    <tr>
+        <td><a href="/room/{{ room_and_bookings.room.id }}"> {{ room_and_bookings.room.name }}</a></td>
+        <td>{{ room_and_bookings.room.capacity }}</td>
+        <td>{% if today in room_and_bookings.bookings %}
+            <p1 style="color:red">ZAJĘTA - {{ today }}</p1>
+            {% else %}
+            <p1 style="color:green">WOLNA - {{ today }}</p1>
+        {% endif %} </td>
+        <td>{% if room_and_bookings.room.projector %}
+            &#9989;
+            {% else %}
+            &#10060;
+        {% endif %} </td>
+        <td><a href="/room/modify/{{ room_and_bookings.room.id }}"><button>Edytuj</button></a> </td>
+        <td><a href="/room/delete/{{ room_and_bookings.room.id }}"><button>Usuń</button></a> </td>
+        <td><a href="/room/reserve/{{ room_and_bookings.room.id }}"><button>Zarezerwuj</button></a> </td>
+    </tr>
+
+    {% empty %}
+    <tr><td colspan="3">Brak dostępnych sal</td></tr>
+{% endfor %}
+
+</table>
+
+    <footer class="crbs-footer">Author: Kamil Przygodzki</footer>
+</body>
+</html>
